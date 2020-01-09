@@ -1,7 +1,8 @@
 import os
 
 from flask import Flask
-from .routes import get_blueprint
+
+from src.routes.device import get_blueprint
 
 def create_app(test_config=None):
     # create and configure the app

@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-from .base import JsonEndpoint
-from .controllers import DeviceController
+from src.base import JsonEndpoint
+from src.controllers import DeviceController
 
 def get_blueprint():
     bp = Blueprint('command_api', __name__)
