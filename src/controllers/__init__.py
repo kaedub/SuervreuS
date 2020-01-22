@@ -1,2 +1,2 @@
 from .base import ApiController
-from .device import DeviceController
+from .device import DeviceController, DeviceCommandController

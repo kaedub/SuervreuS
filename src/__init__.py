@@ -30,4 +30,7 @@ def create_app(test_config=None):
     for route in routes:
         app.register_blueprint(route)
 
+    from . import database
+    database.init_app(app)
+
     return app
