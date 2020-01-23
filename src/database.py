@@ -1,43 +1,28 @@
-import sqlite3
+import json
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext import mutable
+from flask import Flask
 
-import click
-from flask import current_app, g
-from flask.cli import with_appcontext
-
-
-def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
+db = SQLAlchemy()
 
 
-def close_db(e=None):
-    db = g.pop('db', None)
+# JsonEncodedDict from https://www.michaelcho.me/article/json-field-type-in-sqlalchemy-flask-python
+class JsonEncodedDict(db.TypeDecorator):
+    """Enables JSON storage by encoding and decoding on the fly."""
+    impl = db.Text
 
-    if db is not None:
-        db.close()
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return '{}'
+        else:
+            return json.dumps(value)
 
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
-
-
-def init_db():
-    db = get_db()
-
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return {}
+        else:
+            return json.loads(value)
 
 
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+mutable.MutableDict.associate_with(JsonEncodedDict)

@@ -9,7 +9,7 @@ def get_blueprint():
     device_view = JsonEndpoint.as_view('device', DeviceController)
     bp.add_url_rule('/device/<int:device_id>', view_func=device_view, methods=['GET', 'POST', 'PUT'])
 
-    command_view = JsonEndpoint.as_view('device', DeviceCommandController)
-    bp.add_url_rule('/device/<int:device_id>/command/<str:command>', view_func=command_view, methods=['POST'])
+    command_view = JsonEndpoint.as_view('device_command', DeviceCommandController)
+    bp.add_url_rule('/device/<int:device_id>/command/<string:command>', view_func=command_view, methods=['POST'])
 
     return bp
