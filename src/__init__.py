@@ -1,10 +1,8 @@
 import os
-
-from flask import Flask, g
+from flask import Flask
 
 from src.database import db
-from src.routes import device as device_api
-# from src.config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
+from src.routes import client as client_api
 
 
 def create_app(test_config=None):
@@ -14,24 +12,17 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
     )
 
-
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + SQLALCHEMY_DATABASE_URI
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
     if test_config is None:
-        # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py')
     else:
         app.config.from_mapping(test_config)
 
-    print('connected to')
-    print(app.config['SQLALCHEMY_DATABASE_URI'])
-    # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    routes = [device_api]
+    routes = [client_api]
     for route in routes:
         app.register_blueprint(route.get_blueprint())
 
