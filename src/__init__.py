@@ -1,8 +1,9 @@
 import os
-
 from flask import Flask
 
-from src.routes.device import get_blueprint
+from src.database import db
+from src.routes import client as client_api
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -12,22 +13,23 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile('config.py')
     else:
-        # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    device_api = get_blueprint()
-
-    routes = [device_api]
+    routes = [client_api]
     for route in routes:
-        app.register_blueprint(route)
+        app.register_blueprint(route.get_blueprint())
+
+    @app.route('/')
+    def index():
+        return '<div><strong>SuervreuS</strong><br><p>An IoT command processing service</p></div>'
+
+    db.init_app(app)
 
     return app
