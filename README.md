@@ -12,35 +12,48 @@
 
 Make sure `pip` is installed
 
-Install `pyenv-virtualenv`, and `sqlite3`
+Install `pyenv-virtualenv`, `memcached` and `sqlite3`
 
 
 ```
 brew update
 brew install sqlite3
+brew install memcached
 brew install pyenv-virtualenv
 ```
 
 #### Setup
 
-Setup virtual environment
+Clone the repo then `cd SuervreuS`
 
+Create virtual environment
 
 ```
 pyenv virtualenv SuervreuS
 ```
 
-Environment variables
+Install Python dependencies
+
+```
+pip install -r requirements.txt
+```
+
+Set environment variables
 
 ```
 export FLASK_APP=src/__init__.py
 export FLASK_ENV=development
 ```
 
+Start memcached
+
+```
+memcached -u memcached -d -m 30 -l 127.0.0.1 -p 11211
+```
+
 Run the application
 
 ```
-cd SuervreuS
 flask run
 ```
 

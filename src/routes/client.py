@@ -11,6 +11,6 @@ def get_blueprint():
     bp.add_url_rule('/client/<int:client_id>', view_func=client_view, methods=['GET', 'PUT'])
 
     command_view = JsonEndpoint.as_view('client_command', ClientCommandController)
-    bp.add_url_rule('/client/<int:client_id>/command', view_func=command_view, methods=['POST'])
+    bp.add_url_rule('/client/<int:client_id>/command',view_func=command_view, methods=['GET', 'POST'])
 
     return bp
