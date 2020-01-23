@@ -1,6 +1,7 @@
 from sqlalchemy.orm import joinedload
 
 from src.controllers import ApiController
+from src.database import db
 from src.models.device import Device
 from src.schemas.device_schema import DeviceSchema
 
@@ -11,35 +12,23 @@ class DeviceController(ApiController):
 
         schema = DeviceSchema()
         data = schema.dump(device)
-
-
-        # data = {
-        #     'id': device.id,
-        #     'name': device.name,
-        #     'date_created': device.created,
-        #     'date_last_connected': device.last_connection,
-        #     'commands': [
-        #         {'id': cmd.id, 'name': cmd.name, 'parameters': cmd.parameters}
-        #         for cmd in device.commands
-        #     ]
-        # }
         
         return self.response(data)
 
     def post(self, request_data):
-        # deserialize device data
+        schema = DeviceSchema()
+        device = schema.load(request_data)
 
-        data = f'Created new device'
+        db.session.add(device)
+        db.session.commit()
 
+        data = schema.dump(device)
         return self.response(data)
 
 class DeviceCommandController(ApiController):
     def post(self, request_data):
         device_id = request_data.get('device_id')
-        command = request_data.get('command')
+        cmd_name = request_data.get('name')
         params = request_data.get('params')
-
-        # set device-command cache
-
-        data = f'Queued {command} command for device {device_id} with following params: {params}'
+        data = f'Queued "{cmd_name}" command for device "{device_id}" with following params:\n{params}'
         return self.response(data)
