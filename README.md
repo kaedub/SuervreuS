@@ -45,7 +45,7 @@ memcached -u memcached -d -m 30 -l 127.0.0.1 -p 11211
 Make sure you are in the project directory.
 
 
-Install the latest version of Python with `pyenv`
+Install the latest version of Python with `pyenv` if you have not installed `pyenv` before make sure to follow the instructions [here](https://github.com/pyenv/pyenv#installation).
 
 ```
 pyenv install 3.8.1
