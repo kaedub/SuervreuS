@@ -81,6 +81,8 @@ class BaseEndpoint(View):
         else:
             response = response_data
 
+        response = self.set_default_headers(response)
+
         return response
 
     def init_controller(self):
@@ -116,6 +118,9 @@ class BaseEndpoint(View):
         """Return rendered response."""
         raise NotImplementedError("render() must be implemented on all endpoint classes")
 
+    def set_default_headers(responseself, response):
+        response.headers.set('Access-Control-Allow-Origin', '*')
+        return response
 
 class JsonEndpoint(BaseEndpoint):
     """Endpoint for JSON api."""

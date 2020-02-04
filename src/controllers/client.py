@@ -21,6 +21,7 @@ class ClientController(ApiController):
         schema = ClientSchema()
         client = schema.load(request_data)
 
+
         db.session.add(client)
         db.session.commit()
 

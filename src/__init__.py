@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, make_response
 
 from src.database import db
 from src.routes import client as client_api
@@ -28,7 +28,9 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        return '<div><strong>SuervreuS</strong><br><p>An IoT command processing service</p></div>'
+        response = make_response({'data': 'SuervreuS: an IoT microservice'})
+        response.headers.set('Access-Control-Allow-Origin', app.config['CLIENT_URL'])
+        return response
 
     db.init_app(app)
 

@@ -13,13 +13,14 @@
 
 Make sure `pip` is installed
 
-Install `pyenv-virtualenv`, `memcached` and `sqlite3`
+Install `pyenv`, `pyenv-virtualenv`, `memcached` and `sqlite3`
 
 
 ```
 brew update
 brew install sqlite3
 brew install memcached
+brew install pyenv
 brew install pyenv-virtualenv
 ```
 
