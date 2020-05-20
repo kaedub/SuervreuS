@@ -29,7 +29,7 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         response = make_response({'data': 'SuervreuS: an IoT microservice'})
-        response.headers.set('Access-Control-Allow-Origin', app.config['CLIENT_URL'])
+        response.headers.set('Access-Control-Allow-Origin', '*')
         return response
 
     db.init_app(app)
